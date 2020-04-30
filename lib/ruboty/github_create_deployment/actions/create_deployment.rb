@@ -18,7 +18,7 @@ module Ruboty
             ref,
             {
               auto_merge: false,
-              environment: message[:environment],
+              environment: environment,
             }.compact,
           )
 
@@ -28,23 +28,20 @@ module Ruboty
         rescue Octokit::NotFound
           message.reply("Could not find that repository")
         rescue => exception
+          Ruboty.logger.debug("repository: #{repository}, ref: #{ref}, environment: #{environment}")
           message.reply("Failed by #{exception.class}")
-        end
-
-        private def git_ref
-          message[:git_ref]
-        end
-
-        private def repository
-          git_ref.split(":").first
-        end
-
-        private def ref
-          git_ref.split(":").last
         end
 
         private def environment
           message[:environment]
+        end
+
+        private def repository
+          message[:repo]
+        end
+
+        private def ref
+          message[:ref]
         end
       end
     end

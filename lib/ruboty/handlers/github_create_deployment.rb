@@ -4,7 +4,7 @@ module Ruboty
   module Handlers
     class GithubCreateDeployment < Base
       on(
-        /create deployment of (?<git_ref>.+)( to (?<environment>.+))?\z/,
+        /create deployment of (?<repo>\S+):(?<ref>\S+)( to (?<environment>\S+))?\z/,
         name: "create_deployment",
         description: "Generate deployment on GitHub",
       )
