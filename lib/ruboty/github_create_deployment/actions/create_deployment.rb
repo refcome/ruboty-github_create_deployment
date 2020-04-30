@@ -13,6 +13,10 @@ module Ruboty
         end
 
         private def create
+          Ruboty.logger.debug("repo: #{repository}")
+          Ruboty.logger.debug("ref: #{ref}")
+          Ruboty.logger.debug("environment: #{environment}")
+
           client.create_deployment(
             repository,
             ref,
@@ -22,14 +26,17 @@ module Ruboty
             }.compact,
           )
 
-          message.reply("Created!")
+          message.reply("Created #{deployments_url}")
         rescue Octokit::Unauthorized
           message.reply("Failed in authentication (401)")
         rescue Octokit::NotFound
           message.reply("Could not find that repository")
         rescue => exception
-          Ruboty.logger.debug("repository: #{repository}, ref: #{ref}, environment: #{environment}")
           message.reply("Failed by #{exception.class}")
+        end
+
+        private def deployments_url
+          "https://github.com/#{repository}/deployments"
         end
 
         private def environment
