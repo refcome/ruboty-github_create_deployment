@@ -22,6 +22,7 @@ module Ruboty
             ref,
             {
               auto_merge: false,
+              required_contexts: [], # @note skip checking statuses
               environment: environment,
             }.compact,
           )
